@@ -1,18 +1,16 @@
 window.addEventListener('DOMContentLoaded', function(){
     
     const reader = new FileReader();
-    const aboutUs = document.querySelector('#aboutus');
+    //FileReader only works for uploaded files
+    //you're going to want a fetch request
 
-    reader.addEventListener('load', function() {
-        aboutUs.appendChild(reader.readAsText('help'))
+    fetch('./about-us.txt')
+    .then(function(response){
+        return response.text();
+    })
+    .then(function(response){
+        document.querySelector('#aboutus').innerHTML = response;
     });
-
-    console.log(reader.readAsText('./about-us.txt'))
-
-
-
-    aboutUs.innerHTML = reader.readAsText('./about-us.txt');
-    aboutUs.appendChild(reader.readAsText('./about-us.txt'));
 });
 
 

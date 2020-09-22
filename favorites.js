@@ -5,7 +5,7 @@ function renderFavorites(favelist) {
                 <div class="card-body"> 
                 <h5 class="card title">${currentrestaurant.name}</h5>
                 <a class="btn btn-primary" href="${currentrestaurant.url}">Make a Reservation</a>
-                <button class="btn btn-danger">Delete From Favorites</button>
+                <button class="btn btn-danger delete">Delete From Favorites</button>
                 </div></div>`            
     });
     return renderedFavorites.join('');
@@ -13,24 +13,24 @@ function renderFavorites(favelist) {
 
 function renderHated(hatelist) {
     var renderedHated = hatelist.map(currentrestaurant => {
-        return `<div id="${currentrestaurant.name}" class = "card>
-        <img style = "card-img-top" src=${currentrestaurant.pic} alt="A photo of ${restaurant.name}>
+        return `<div id="${currentrestaurant.name}" class = "card">
+        <img style = "card-img-top" src=${currentrestaurant.pic} alt="A photo of ${restaurant.name}">
         <div class = "card-body">
-        <h5 class="card title">${currentrestaurant.name}></h5>
+        <h5 class="card title">${currentrestaurant.name}</h5>
         <a class="btn btn-primary" href = "${currentrestaurant.url}">
-        <button class="btn btn-success">Delete From Hated!</button>
+        <button class="btn btn-success delete">Delete From Hated!</button>
         </div></div>`
     });
     return renderedHated.join('');
 }
 window.addEventListener('DOMContentLoaded', function() {
 
-    const deleteButton = document.querySelectorAll('.btn btn-primary');
+    const deleteHatelistButton = document.querySelectorAll('.delete');
 
-    deleteButton.on('click', function(event){
+    deleteHatelistButton.on('click', function(event){
         event.preventDefault();
-       // THIS.parent().remove();
-    })
+        event.target.remove();
+    });
 
 })/*
 

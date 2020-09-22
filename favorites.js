@@ -5,6 +5,7 @@ function renderFavorites(favelist) {
                 <div class="card-body"> 
                 <h5 class="card title">${currentrestaurant.name}</h5>
                 <a class="btn btn-primary" href="${currentrestaurant.url}">Make a Reservation</a>
+                <button class="btn btn-danger">Delete From Favorites</button>
                 </div></div>`            
     });
     return renderedFavorites.join('');
@@ -17,11 +18,23 @@ function renderHated(hatelist) {
         <div class = "card-body">
         <h5 class="card title">${currentrestaurant.name}></h5>
         <a class="btn btn-primary" href = "${currentrestaurant.url}">
+        <button class="btn btn-success">Delete From Hated!</button>
         </div></div>`
     });
     return renderedHated.join('');
 }
 window.addEventListener('DOMContentLoaded', function() {
+
+    const deleteButton = document.querySelectorAll('.btn btn-primary');
+
+    deleteButton.on('click', function(event){
+        event.preventDefault();
+       // THIS.parent().remove();
+    })
+
+})/*
+
+    
 
     var divWhereWeStickRestaurants = document.querySelector('#westoredmovieshere');
 
@@ -39,4 +52,4 @@ window.addEventListener('DOMContentLoaded', function() {
     // + sign there in case of accidental overwrite of fave list
     divWhereWeStickRestaurants.innerHTML = divWhereWeStickRestaurants.innerHTML + renderHated(hatelist);
 
-});
+});*/

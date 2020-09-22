@@ -1,0 +1,8 @@
+We are a team of programmers from around the country* who love dogs and food!
+Unfortunately, it turns out the Board of Health likes dogs somewhat less than us.
+So we decided to create a website for people who like dogs AND food,
+not just dogs OR food.
+
+Bone appetit!
+
+*Atlanta, Houston, and Chicago

@@ -32,10 +32,6 @@ window.addEventListener('DOMContentLoaded', function() {
         event.target.remove();
     });
 
-})/*
-
-    
-
     var divWhereWeStickRestaurants = document.querySelector('#westoredmovieshere');
 
     //does JSON magic to the favelist that should be pushed to from the main page(fave button? hate button?)
@@ -52,4 +48,6 @@ window.addEventListener('DOMContentLoaded', function() {
     // + sign there in case of accidental overwrite of fave list
     divWhereWeStickRestaurants.innerHTML = divWhereWeStickRestaurants.innerHTML + renderHated(hatelist);
 
-});*/
+    //
+
+});

@@ -4,8 +4,8 @@
 let addressLat;
 let addressLong;
 let restaurantObject = {};
-let regex = new RegExp('(dog|pet|animal|friendly)');
-let dogFriendly = {};
+let regex = new RegExp('(?:dog|pet|animal)');
+let dogFriendlyIds = [];
 
 const googleApiKey = 'AIzaSyCrK3yusa4V5Evj1A2cwdxkb_iUR-WLCVk'; // Key for the multiple google apis we will be pulling from.
 const userAddress = '1334 Brittmoore Rd, Houston, TX'; //This will eventually change.
@@ -42,7 +42,17 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
                     axios.get(proxyUrl + `${googlePlacesDetails}place_id=${restArray[index]}=name,rating,review,formatted_phone_number&key=${googleApiKey}`)
                     .then((response)=>{
                         console.log(response.data);
-                        dogFriendly = regex.exec(response.data.reviews.text);//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
+                        const reviewsArray = response.data.reviews;
+                        // for (let reviewsIndex = 0; reviewsIndex < reviewsArray.length; reviewsIndex++){
+                        //     if(regex.test(response.data.reviews[reviewsIndex].text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
+                        //         dogFriendlyIds = restArray[index];
+                        //     }
+                        // }
+                        dogFriendlyIds = reviewsArray.map((currentReview)=>{
+                            if(regex.test(currentReview.text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
+                                dogFriendlyIds = restArray[index];
+                            }
+                        })
                     })
                 }
             })

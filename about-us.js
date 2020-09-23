@@ -1,3 +1,19 @@
+function replaceDog(){
+    let gotDog = window.localStorage.getItem('dogkey');
+    if(gotDog) {
+        let dogicon = document.querySelector('.navbar img'); 
+        if(!dogicon){
+            dogicon = document.createElement('img');
+        }
+        
+        dogicon.setAttribute('src', gotDog);
+        dogicon.setAttribute('height', '20px');
+        placeDog = document.querySelector('.fas.fa-dog');
+        placeDog.parentNode.insertBefore(dogicon, placeDog.nextSibling);
+        placeDog.style.display="none";
+    }
+}
+
 window.addEventListener('DOMContentLoaded', function(){
 
     fetch('./about-us.txt')
@@ -12,7 +28,9 @@ window.addEventListener('DOMContentLoaded', function(){
     var buff = document.getElementById('buff');
     var output = document.getElementById('output')
     var reader = new FileReader();
-    
+
+    replaceDog();
+
     enteredFile.addEventListener('change', function(event) {
         event.preventDefault();
         var file = enteredFile.files[0];
@@ -21,9 +39,13 @@ window.addEventListener('DOMContentLoaded', function(){
         if(file.type.match(isitImage)) {
             reader.addEventListener('load', function(){
                 //this gets the file that the user inputted and turns the result into something that can be displayed as an image
-                let dogpic = reader.result;
-                buff.innerHTML = buff.innerHTML+ `<img src=${dogpic}></img>`
+                let dogpic = reader.result
+
+                let thisDog = window.localStorage.setItem('dogkey', dogpic);
                 
+                buff.innerHTML = buff.innerHTML + `<img src=${dogpic}></img>`
+                replaceDog();
+
             })
         reader.readAsDataURL(file);
         }

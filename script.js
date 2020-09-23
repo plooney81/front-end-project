@@ -26,34 +26,27 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
             .then((response) =>{
                 // console.log(response.data);
                 restaurantObject = response.data.results;
-                const restArray = restaurantObject.map((currentResturaunt)=>{
-                    return currentResturaunt.place_id; //only returns the place_id from the restaurant data, when then loop over the ID's to get the details api information.
+                const restArray = restaurantObject.map((currentRestaurant)=>{
+                    return currentRestaurant.place_id; //only returns the place_id from the restaurant data, when then loop over the ID's to get the details api information.
                 })
                 console.log(restArray);
-                // const placeDetailsArray = restArray.map((currentId)=>{
-                //     console.log(currentId);
-                //     axios.get(proxyUrl + `${googlePlacesDetails}place_id=${currentId}=name,rating,review,formatted_phone_number&key=${googleApiKey}`)
-                //         .then((response)=>{
-                //             console.log(response.data);
-                //         })
-                // })
+                const placeDetailsArray = restArray.map((currentId)=>{
+                    console.log(currentId);
+                    // axios.get(proxyUrl + `${googlePlacesDetails}place_id=${currentId}=name,rating,review,formatted_phone_number&key=${googleApiKey}`)
+                    //     .then((response)=>{
+                    //         console.log(response.data);
+                    //         const reviewsArray = response.data.reviews;
+                    //         dogFriendlyIds = reviewsArray.map((currentReview)=>{
+                    //             if(regex.test(currentReview.text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
+                    //                 dogFriendlyIds = restArray[index];
+                    //             }
+                    //         })
+                    //     })
+                    // axios.get('https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJtWbh4qfEQIYRttELI3ED2lI&fields=name,rating,review,formatted_phone_number&key=AIzaSyCrK3yusa4V5Evj1A2cwdxkb_iUR-WLCVk')
+                    //     .then((response)=>{
+                    //         console.log(response.data);
+                    //     })
+                })
 
-                for (let index = 0; index < restArray.length; index++){
-                    axios.get(proxyUrl + `${googlePlacesDetails}place_id=${restArray[index]}=name,rating,review,formatted_phone_number&key=${googleApiKey}`)
-                    .then((response)=>{
-                        console.log(response.data);
-                        const reviewsArray = response.data.reviews;
-                        // for (let reviewsIndex = 0; reviewsIndex < reviewsArray.length; reviewsIndex++){
-                        //     if(regex.test(response.data.reviews[reviewsIndex].text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
-                        //         dogFriendlyIds = restArray[index];
-                        //     }
-                        // }
-                        dogFriendlyIds = reviewsArray.map((currentReview)=>{
-                            if(regex.test(currentReview.text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
-                                dogFriendlyIds = restArray[index];
-                            }
-                        })
-                    })
-                }
             })
     })

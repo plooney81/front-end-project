@@ -1,0 +1,44 @@
+.navbar-brand {
+  margin-left: 10px;
+}
+.button {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.search {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 40px;
+}
+#search-bar {
+  height: 35px;
+  width: 800px;
+  border-radius: 10px;
+}
+
+#search-Btn {
+  margin-left: 10px;
+  border-radius: 10px;
+}
+
+.eatImg,
+.playImg {
+  height: 30%;
+  width: 40%;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 30%;
+  padding-top: 40px;
+}
+
+.form-group {
+  justify-content: center;
+  padding-top: 40px;
+}

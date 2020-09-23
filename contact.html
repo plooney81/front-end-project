@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,10 +14,10 @@
       src="https://kit.fontawesome.com/0af1d80857.js"
       crossorigin="anonymous"
     ></script>
-    <title>With Your Pups!</title>
+    <title>Contact</title>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <i class="fas fa-dog" style="font-size: 55px"></i>
-      <a class="navbar-brand" href="index.html">Dine-In Doggos</a>
+      <a class="navbar-brand" href="#">Dine-In Doggos</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -49,24 +50,29 @@
     </nav>
   </head>
   <body>
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <h1 class="display-4">About us</h1>
-        <p class="lead">
-          "Have you ever wanted to take Fido out for some exercise, walked out
-          the door and realized it's lunch time? Have you ever wanted to let
-          your dog play with other dogs while you have a cold beer? Dine-In
-          Doggos is our answer to this conundrum. Simply click "Eat" to find the
-          nearest dog-friendly dine-in grub to sate your food fantasies and
-          click "Play" to find a dog park near the restaurant that you can take
-          your pup to get his play on."
-        </p>
+    <form>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="emailHelp"
+        />
       </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Comment</label>
+          <textarea
+            class="form-control"
+            id="exampleFormControlTextarea1"
+            rows="3"
+          ></textarea>
+      </div>
+      <div class="form-group">
+      <button 
+      type="submit" class="btn btn-success">Submit</button>
     </div>
-    <div class="button">
-      <a type="button" class="btn btn-light btn-lg" href="eat.html"> EAT </a>
-      <a type="button" class="btn btn-dark btn-lg" href="play.html"> PLAY </a>
-    </div>
-    <footer></footer>
+  </div>
+    </form>
   </body>
 </html>

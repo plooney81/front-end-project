@@ -66,6 +66,22 @@ function noList(restaurantName) {
 
 }
 
+function replaceDog(){
+    let gotDog = window.localStorage.getItem('dogkey');
+    if(gotDog) {
+        let dogicon = document.querySelector('.navbar img'); 
+        if(!dogicon){
+            dogicon = document.createElement('img');
+        }
+        
+        dogicon.setAttribute('src', gotDog);
+        dogicon.setAttribute('height', '20px');
+        placeDog = document.querySelector('.fas.fa-dog');
+        placeDog.parentNode.insertBefore(dogicon, placeDog.nextSibling);
+        placeDog.style.display="none";
+    }
+}
+window.addEventListener('DOMContentLoaded', replaceDog());
 
 //THIS ENDS KATE'S CODE AND STARTS PETE'S CODE
 

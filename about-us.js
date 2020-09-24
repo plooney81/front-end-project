@@ -13,7 +13,7 @@ function replaceDog(){
         placeDog.style.display="none";
     }
 }
-
+margin
 window.addEventListener('DOMContentLoaded', function(){
 
     fetch('./about-us.txt')

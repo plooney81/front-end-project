@@ -25,15 +25,14 @@ function renderRestaurants(friendlyRs) {
         var confidencerating = (individualrestaurant.frequency*5) + 50.5; 
 
         //the onclick attribute in the button class executes the yes or noList functions
-        return `<div id="${individualrestaurant.restaurantName}" class="card">
-                <div class="card-body"> 
-                <h4 class="card title">${individualrestaurant.restaurantName}</h4>
-                <p>According to <strong>user reviews</strong>, this is a....</p>
-                <h5>${individualrestaurant.rating}-Star Restaurant, and is </h5>
-                <h5>${confidencerating}% Likely to Be Dog-Friendly</h5>
-                <button class="btn btn-success" onclick="yesList('${individualrestaurant.restaurantName}')">This Restaurant Accepts Dogs</button>
-                <button class="btn btn-danger delete" onclick="noList('${individualrestaurant.restaurantName}')">This Restaurant Doesn't Accept Dogs</button> 
-                </div></div>`            
+        return `<div style="background-color: cornsilk; border-radius: 20px; border: 4px solid black; margin-bottom: 40px; margin-left:40px">
+                <h4 style="text-align: center; color: cornflowerblue; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; border-radius:20px; border: 9px solid aquamarine;">${individualrestaurant.restaurantName}</h4>
+                <p style="padding: 0%; margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">According to <strong>user reviews</strong>, this is a....</p>
+                <h5 style="margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${individualrestaurant.rating}-Star Restaurant, and is </h5>
+                <h5 style="margin: 2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${confidencerating}% Likely to Be Dog-Friendly</h5>
+                <button class="btn btn-success" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif" onclick="yesList('${individualrestaurant.restaurantName}')">Pawsitively Friendly!</button>
+                <button class="btn btn-danger delete" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif" onclick="noList('${individualrestaurant.restaurantName}')">Doesn't Accept Dogs</button> 
+                </div>`            
     });
     return renderedRestaurants.join('');
 }

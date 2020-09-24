@@ -12,6 +12,21 @@ const urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the us
 
 const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // our geocode api starting URL, we will add onto it in the axios request
 
+// Render Function Code for dog parks
+function renderParks(parksArray) {
+    var renderedRestaurants = parksArray.map(individualPark => {
+        return `<div id="${individualPark.name} class="card">
+                    <div class="card-body"> 
+                        <h5 class="card title">${individualPark.name}</h5>
+                        <h2>Park Rating: ${individualPark.rating}</h2>
+                        <h4>Address:</h4>
+                        <h5>${individualPark.address}</h5>
+                    </div>
+                </div>`            
+    });
+    return renderedRestaurants.join('');
+}
+
 axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
     .then((response)=>{
         console.log(response.data);
@@ -36,9 +51,9 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
                 let parkSearchResults = results;
                 console.log(parkSearchResults);
                 const parkArray = parkSearchResults.map((currentPark)=>{
-                    if(currentPark.photos[0]){
-                        console.log(currentPark.photos[0].html_attributions[0])
-                    }
+                    // if(currentPark.photos[0]){
+                    //     console.log(currentPark.photos[0].html_attributions[0])
+                    // }
                     let tempObject = {
                         'name' : currentPark.name,
                         'address' : currentPark.formatted_address,
@@ -48,5 +63,15 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
                 })
                 dogParkObject = parkArray;
             }
+
+            // render function call
+            let parksKeys = [];
+            Object.keys(dogParkObject).forEach((key) => {
+                parksKeys.push(dogParkObject[key]);
+            });
+            
+            console.log(parksKeys)
+            const starthere = document.querySelector('#starthere');
+            starthere.innerHTML = renderParks(parksKeys);
         });
     })

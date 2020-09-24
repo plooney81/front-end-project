@@ -84,15 +84,16 @@ async function returnFourSquarePicture(restName, lat, long, searchDistance){
             // another axios on four using the restaurants foursquare ID so we can get pictures and URLS for the place.
         return axios.get(`${fourUrl}${fourSquareRestId}/photos?${fourKey}`)
             .then((secondResponse)=>{
-                if(secondResponse.data.response.photos.items[0]){
-                    console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
-                    return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`
-                }else{
+                if (!secondResponse.ok){
                     return '#';
+                }else{
+                    if(secondResponse.data.response.photos.items[0]){
+                        console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
+                        return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`
+                    }else{
+                        return '#';
+                    }
                 }
-            })
-            .catch(()=>{
-                return '#';
             })
         })
 }

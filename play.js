@@ -16,13 +16,13 @@ const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // o
 function renderParks(parksArray) {
     var renderedRestaurants = parksArray.map(individualPark => {
         return `<div id="${individualPark.name} class="card">
-                <div class="card-body"> 
-                <h5 class="card title">${individualPark.name}</h5>
-                <h2>Park Rating: ${individualPark.rating}</h2>
-                <h4>Address:</h4>
-                <h5>${individualPark.address}</h5>
-                <a class="btn btn-primary" href="${individualPark.restaurantName}">Make a Reservation</a>
-                </div></div>`            
+                    <div class="card-body"> 
+                        <h5 class="card title">${individualPark.name}</h5>
+                        <h2>Park Rating: ${individualPark.rating}</h2>
+                        <h4>Address:</h4>
+                        <h5>${individualPark.address}</h5>
+                    </div>
+                </div>`            
     });
     return renderedRestaurants.join('');
 }

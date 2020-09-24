@@ -27,6 +27,23 @@ function renderParks(parksArray) {
     return renderedRestaurants.join('');
 }
 
+function replaceDog(){
+    let gotDog = window.localStorage.getItem('dogkey');
+    if(gotDog) {
+        let dogicon = document.querySelector('.navbar img'); 
+        if(!dogicon){
+            dogicon = document.createElement('img');
+        }
+        
+        dogicon.setAttribute('src', gotDog);
+        dogicon.setAttribute('height', '20px');
+        placeDog = document.querySelector('.fas.fa-dog');
+        placeDog.parentNode.insertBefore(dogicon, placeDog.nextSibling);
+        placeDog.style.display="none";
+    }
+}
+window.addEventListener('DOMContentLoaded', replaceDog());
+
 axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
     .then((response)=>{
         console.log(response.data);

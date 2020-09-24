@@ -20,15 +20,51 @@ const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 //THIS BEGINS KATE'S CODE AND ENDS PETE'S CODE
 function renderRestaurants(friendlyRs) {
     var renderedRestaurants = friendlyRs.map(individualrestaurant => {
-        return `<div id="${individualrestaurant.restaurantName} class="card">
+        
+        //calculates the confidence % that each restaurant is dog-friendly based on user ratings
+        var confidencerating = (individualrestaurant.frequency*5) + 50.5; 
+
+        //the onclick attribute in the button class executes the yes or noList functions
+        return `<div id="${individualrestaurant.restaurantName}" class="card">
                 <div class="card-body"> 
-                <h5 class="card title">${individualrestaurant.restaurantName}</h5>
-                <h2>${individualrestaurant.rating}-Star-Friendly Rating</h2>
-                <a class="btn btn-primary" href="${individualrestaurant.restaurantName}">Make a Reservation</a>
-                <button class="btn btn-danger delete">Delete From Favorites</button>
+                <h4 class="card title">${individualrestaurant.restaurantName}</h4>
+                <p>According to <strong>user reviews</strong>, this is a....</p>
+                <h5>${individualrestaurant.rating}-Star Restaurant, and is </h5>
+                <h5>${confidencerating}% Likely to Be Dog-Friendly</h5>
+                <button class="btn btn-success" onclick="yesList('${individualrestaurant.restaurantName}')">This Restaurant Accepts Dogs</button>
+                <button class="btn btn-danger delete" onclick="noList('${individualrestaurant.restaurantName}')">This Restaurant Doesn't Accept Dogs</button> 
                 </div></div>`            
     });
     return renderedRestaurants.join('');
+}
+
+function yesList(restaurantName) {
+    const restaurant = dogFriendlyRestaurants[restaurantName];
+    let yesListJSON = localStorage.getItem('yesList');
+    let yesList = JSON.parse(yesListJSON); 
+
+    //if the yeslist doesn't yet exist, make it
+    if(yesList == null) {
+        yesList = [];
+    }
+    
+    yesList.push(restaurant);
+    yesListJSON = JSON.stringify(yesList);
+    localStorage.setItem('yesList', yesListJSON);
+}
+
+function noList(restaurantName) {
+    const restaurant = dogFriendlyRestaurants[restaurantName];
+    let noListJSON = localStorage.getItem('noList');
+    let noList = JSON.parse(noListJSON);
+
+    if(noList == null) {
+        noList = [];
+    }
+    noList.push(restaurant);
+    noListJSON = JSON.stringify(noList);
+    localStorage.setItem('noList', noListJSON);
+
 }
 
 
@@ -96,7 +132,6 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
                                 console.log(dogFriendly)
                                 const starthere = document.querySelector('#starthere');
                                 starthere.innerHTML = renderRestaurants(dogFriendly);
-
                             
                         }
                     });
@@ -117,7 +152,7 @@ function returnFourSquarePicture(restName, lat, long, searchDistance){
         .then((res)=>{
             fourSquareRestId = res.data.response.venues[0].id;
 
-            // another axios on four
+            // another axios on four using the restaurants foursquare ID so we can get pictures and URLS for the place.
         })
 }
 // End of Petes addition

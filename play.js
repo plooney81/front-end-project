@@ -65,13 +65,13 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
             }
 
             // render function call
-            let parksKeys = [];
+            let actualParks = [];
             Object.keys(dogParkObject).forEach((key) => {
-                parksKeys.push(dogParkObject[key]);
+                actualParks.push(dogParkObject[key]);
             });
             
-            console.log(parksKeys)
+            console.log(actualParks)
             const starthere = document.querySelector('#starthere');
-            starthere.innerHTML = renderParks(parksKeys);
+            starthere.innerHTML = renderParks(actualParks);
         });
     })

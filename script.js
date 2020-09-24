@@ -69,6 +69,33 @@ function noList(restaurantName) {
 
 //THIS ENDS KATE'S CODE AND STARTS PETE'S CODE
 
+// Pete added on here
+async function returnFourSquarePicture(restName, lat, long, searchDistance){
+    let fourSquareRestId;
+    const fourUrl = 'https://api.foursquare.com/v2/venues/';
+    const fourKey = 'client_id=XLIUJFK3AC0GVEAG1MOA5RMJQTD2YA4JEVDOX0JA0T5LH0YB&client_secret=ZYDJHE4KNUFCC321PKTU520B4KU1CJA2ZBTINIWWY1IZTH5E&v=20200924';
+    restName = encodeURIComponent(restName);
+    // another axios for foursquare to get pictures of the restaurants
+    return axios.get(`${fourUrl}search?ll=${lat},${long}&radius=${searchDistance}&query=${restName}&categoryId=4d4b7105d754a06374d81259&limit=1&${fourKey}`)
+        .then((res)=>{
+            fourSquareRestId = res.data.response.venues[0].id;
+            // another axios on four using the restaurants foursquare ID so we can get pictures and URLS for the place.
+        return axios.get(`${fourUrl}${fourSquareRestId}/photos?${fourKey}`)
+            .then((secondResponse)=>{
+                if (!secondResponse.ok){
+                    return '#';
+                }else{
+                    if(secondResponse.data.response.photos.items[0]){
+                        console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
+                        return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`
+                    }else{
+                        return '#';
+                    }
+                }
+            })
+        })
+}
+// End of Petes addition
 
 axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
     .then((response)=>{
@@ -113,10 +140,20 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
                                     if (dogFriendlyRestaurants[place.name]){
                                         dogFriendlyRestaurants[place.name].frequency += 1;
                                     }else{
-                                        dogFriendlyRestaurants[place.name] = {'restaurantName' : place.name, 'frequency': 1, 'rating': place.rating, 'reviews': place.reviews}
+                                        // Pete - added in a call for each place to get a FourSquare picture
+                                        let imgUrl = returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius);
+                                        console.log(imgUrl);
+                                        dogFriendlyRestaurants[place.name] = {
+                                            'restaurantName' : place.name, 
+                                            'frequency': 1, 
+                                            'rating': place.rating, 
+                                            'reviews': place.reviews, 
+                                            'pic' : imgUrl
+                                        };
                                     }
                                 }
                             })
+
                             console.log(dogFriendlyRestaurants);
                             //KATE HAS ADDED HERE
                             let dogFriendly = [];
@@ -138,3 +175,5 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
         });
         
     });
+
+

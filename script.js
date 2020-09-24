@@ -87,11 +87,10 @@ async function returnFourSquarePicture(restName, lat, long, searchDistance){
 // End of Petes addition
 
 // PETE ADDED BELOW
-// Jquery code below
+// Jquery code below ---> so if I go back to master branch and change the hard coded userAddress everything works fine...but for some reason this is breaking it
 $(document).ready(()=>{
     let addressLat;
     let addressLong;
-    let restaurantObject = {};
     let regex = new RegExp('(?:dog|pet|animal)');
     let dogFriendlyRestaurants = {};
     let userAddress = 'Chicago'; //This will eventually change.
@@ -128,16 +127,15 @@ $(document).ready(()=>{
                 
                 let service = new google.maps.places.PlacesService(map);
                 
-                
                 let request = {
                     location: loc,
                     radius: `${searchRadius}`,
-                    query: 'restaurant'
+                    query: 'restaurant',
+                    
                 };
                 service.textSearch(request, (results, status)=>{
-                    if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
                         restaurantObject = results;
-                        console.log(restaurantObject);
                         const restArray = restaurantObject.map((currentRestaurant)=>{
                             return currentRestaurant.place_id; //only returns the place_id from the restaurant data, when then loop over the ID's to get the details api information.
                         })

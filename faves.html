@@ -18,8 +18,8 @@
       crossorigin="anonymous"
     ></script>
     <title>Dine-In Doggos</title>
-  </head>
-  <body>
+  </head><body>
+
     <!-- PETE CHANGED THE NAVBAR ITEMS TO MATCH THE OTHER TWO PAGES -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <i class="fas fa-dog" style="font-size: 55px"></i>
@@ -46,9 +46,9 @@
           <li class="nav-item">
             <a class="nav-link" href="play.html">PLAY</a>
           </li>
-            <a class="nav-link" href="faves.html">FETCH</a>
-          </li>
-          <!-- <li class="nav-item dropdown">
+            <a class="nav-link" href="#">FETCH</a>
+          <!-- </li>
+          <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -58,74 +58,24 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-           Dropdown
+              Dropdown
+              KATE ADDED FUNCTIONALITY TO THE DROP-DOWN CODE 
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="eat.html">EAT</a>
               <a class="dropdown-item" href="play.html">PLAY</a>
-              <a class="dropdown-item" href="faves.html">FETCH</a>
-              <a class="dropdown-item" href="about-us.html">SPEAK</a>
-          </li> -->
+              <a class="dropdown-item" href="#">FETCH</a>
+              <a class="dropdown-item" href="about-us.html">SPEAK</a> -->
+          </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">SPEAK</a>
+            <a class="nav-link" href="about-us.html">SPEAK</a>
           </li>
         </ul>
       </div>
     </nav>
 
-      <!-- Added by Kate to hook her about-us paragraph to Dasom's about-us page -->
-    <h3>About Us</h3>
-    <div id="aboutus"></div>
-
-    <h3>About You</h3>
-    <form id="about-you">
-        <label> Tell us a little bit about yourself!
-            <input type="text" id ="userInput" value="" placeholder="My name is Madison and I love my dog Fargo." />
-            <span class="placeholder" id="inputHere"></span>
-        </label>
-    <button id="submit-you" class="btn btn-success">Enter</button>
-    </form>
-
-    <div id="aboutdog"><label for="">Show Us Your Cute Doggo<br>
-        <input type="file" id="enterFile"></label>
-    </div>
-    <div id="output" class="section-wrapper"></div>
-    <div id="buff" class="section-wrapper"></div>
-
-    <h3>Contact Us</h3>
-
-    <!-- this is the end of Kate's edits and the beginning of Dasom's code -->
-    <form>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Email</label>
-        <input
-          type="email"
-          class="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-        />
-      </div>
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Comment</label>
-          <textarea
-            class="form-control"
-            id="exampleFormControlTextarea1"
-            rows="3"
-          ></textarea>
-      </div>
-      <div class="form-group">
-      <button 
-      type="submit" class="btn btn-success">Submit</button>
-    </div>
-  </div> 
-    </form>
-    
-
-   <script src="about-us.js" ></script>
-
+    <div id="faves" style="float: left; width: 40%; margin-left: 20px; padding: 20px; background-color: aquamarine; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; color: antiquewhite;"></div>
+    <div id="unfaves" style="float: right; width: 40%; margin-right: 20px; padding: 20px; background-color: lightcoral; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; color: lightcyan;"></div>
+    <script src="favorites.js"></script>
 </body>
 </html>
-
-
-
-

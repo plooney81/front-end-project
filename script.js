@@ -78,10 +78,13 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
                                     if (dogFriendlyRestaurants[place.name]){
                                         dogFriendlyRestaurants[place.name].frequency += 1;
                                     }else{
+                                        // Pete - added in a call for each place to get a FourSquare picture
+                                        returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius);
                                         dogFriendlyRestaurants[place.name] = {'restaurantName' : place.name, 'frequency': 1, 'rating': place.rating, 'reviews': place.reviews}
                                     }
                                 }
                             })
+
                             console.log(dogFriendlyRestaurants);
                             //KATE HAS ADDED HERE
                             let dogFriendly = [];
@@ -104,5 +107,17 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
         });
         
     });
-//PROBLEM IS THAT DOG FRIENDLY RESTAURANTS IS DICTIONARY -- DO SOMETHING TO MAKE IT BE AN ARRAY
 
+// Pete added on here
+function returnFourSquarePicture(restName, lat, long, searchDistance){
+    let fourSquareRestId;
+    restName = encodeURIComponent(restName);
+    // another axios for foursquare to get pictures of the restaurants
+    axios.get(`https://api.foursquare.com/v2/venues/search?ll=${lat},${long}&radius=${searchDistance}&query=${restName}&categoryId=4d4b7105d754a06374d81259&limit=1&client_id=XLIUJFK3AC0GVEAG1MOA5RMJQTD2YA4JEVDOX0JA0T5LH0YB&client_secret=ZYDJHE4KNUFCC321PKTU520B4KU1CJA2ZBTINIWWY1IZTH5E&v=20200924`)
+        .then((res)=>{
+            fourSquareRestId = res.data.response.venues[0].id;
+
+            // another axios on four
+        })
+}
+// End of Petes addition

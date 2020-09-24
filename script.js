@@ -17,6 +17,24 @@ const googlePlaces = 'https://maps.googleapis.com/maps/api/place/nearbysearch/js
 const googlePlacesDetails = 'https://maps.googleapis.com/maps/api/place/details/json?';
 const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 
+//THIS BEGINS KATE'S CODE AND ENDS PETE'S CODE
+function renderRestaurants(friendlyRs) {
+    var renderedRestaurants = friendlyRs.map(individualrestaurant => {
+        return `<div id="${individualrestaurant.restaurantName} class="card">
+                <div class="card-body"> 
+                <h5 class="card title">${individualrestaurant.restaurantName}</h5>
+                <h2>${individualrestaurant.rating}-Star-Friendly Rating</h2>
+                <a class="btn btn-primary" href="${individualrestaurant.restaurantName}">Make a Reservation</a>
+                <button class="btn btn-danger delete">Delete From Favorites</button>
+                </div></div>`            
+    });
+    return renderedRestaurants.join('');
+}
+
+
+//THIS ENDS KATE'S CODE AND STARTS PETE'S CODE
+
+
 axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
     .then((response)=>{
         console.log(response.data);
@@ -65,10 +83,26 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
                                 }
                             })
                             console.log(dogFriendlyRestaurants);
+                            //KATE HAS ADDED HERE
+                            let dogFriendly = [];
+
+                            Object.keys(dogFriendlyRestaurants).forEach((key) => {
+                                dogFriendly.push(dogFriendlyRestaurants[key]);
+                            });
+
+                                console.log(dogFriendly)
+                                const starthere = document.querySelector('#starthere');
+                                starthere.innerHTML = renderRestaurants(dogFriendly);
+
+                            
                         }
-                    })
+                    });
+                    
                 })
 
             }
         });
-    })
+        
+    });
+//PROBLEM IS THAT DOG FRIENDLY RESTAURANTS IS DICTIONARY -- DO SOMETHING TO MAKE IT BE AN ARRAY
+

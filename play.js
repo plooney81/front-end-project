@@ -1,17 +1,18 @@
 function renderPark(parkList) {
-  var renderPark = parkList.map(currentPark => {
-      return `<div id="${currentPark.name} class="card">
-              
-              <div class="card-body"> 
-              <h3 class="card title">${currentPark.name}</h3>
-              <h3 class="card rate">${currentPark.address}<h3>
-              <h3 class="card rate">${currentPark.rating}<h3>
-              <a class="btn btn-primary" href="${currentPark.url}">Make a Reservation</a>
-              <button class="btn btn-danger delete">Delete From Favorites</button>
-              </div></div>`            
-  });
-  return renderPark.join('');
-}
+    var renderedPark = parkList.map(currentPark => {
+        return `<div id="${currentPark.name}" class="card">
+                <img style="card-img-top" src="${currentPark.pic}" alt="A photo of ${currentPark.name}">
+                <div class="card-body">
+                <h3 class="card title">${currentPark.name}</h3>
+                <h3 class="card rate">${currentPark.rating}</h3>
+                <p>At ${currentPark.address}</p>
+                <a class="btn btn-primary" href="${currentPark.url}">Explore this park!</a>
+                <button class="btn btn-success yes-button" onclick="yesParkList()">A+ Park!</button>
+                <button class="btn btn-danger no-button" onclick="noParkList()">Delete From Favorites</button>
+                </div></div>`
+    });
+    return renderedPark.join('');
+  }
 
 // We need to find a way to get the users address from the search bar
 // we also need to find a way to get the radius the user would like to see results for

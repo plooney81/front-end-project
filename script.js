@@ -27,6 +27,7 @@ function renderRestaurants(friendlyRs) {
         //the onclick attribute in the button class executes the yes or noList functions
         return `<div style="background-color: cornsilk; border-radius: 20px; border: 4px solid black; margin-bottom: 40px; margin-left:40px">
                 <h4 style="text-align: center; color: cornflowerblue; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; border-radius:20px; border: 9px solid aquamarine;">${individualrestaurant.restaurantName}</h4>
+                <img src="${individualrestaurant.pic}" alt="A picture pulled from a FourSquare user of the ${individualrestaurant.restaurantName}">
                 <p style="padding: 0%; margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">According to <strong>user reviews</strong>, this is a....</p>
                 <h5 style="margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${individualrestaurant.rating}-Star Restaurant, and is </h5>
                 <h5 style="margin: 2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${confidencerating}% Likely to Be Dog-Friendly</h5>
@@ -98,16 +99,13 @@ async function returnFourSquarePicture(restName, lat, long, searchDistance){
             // another axios on four using the restaurants foursquare ID so we can get pictures and URLS for the place.
         return axios.get(`${fourUrl}${fourSquareRestId}/photos?${fourKey}`)
             .then((secondResponse)=>{
-                if (!secondResponse.ok){
-                    return '#';
+                if(secondResponse.data.response.photos.items[0]){
+                    // console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
+                    return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`  
                 }else{
-                    if(secondResponse.data.response.photos.items[0]){
-                        console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
-                        return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`
-                    }else{
-                        return '#';
-                    }
+                    return '#';
                 }
+                
             })
         })
 }
@@ -157,31 +155,36 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
                                         dogFriendlyRestaurants[place.name].frequency += 1;
                                     }else{
                                         // Pete - added in a call for each place to get a FourSquare picture
-                                        let imgUrl = returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius);
-                                        console.log(imgUrl);
-                                        dogFriendlyRestaurants[place.name] = {
-                                            'restaurantName' : place.name, 
-                                            'frequency': 1, 
-                                            'rating': place.rating, 
-                                            'reviews': place.reviews, 
-                                            'pic' : imgUrl
-                                        };
+                                        returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((returnUrl)=>{
+                                            // console.log(returnUrl)
+                                            dogFriendlyRestaurants[place.name] = {
+                                                'restaurantName' : place.name, 
+                                                'frequency': 1, 
+                                                'rating': place.rating, 
+                                                'reviews': place.reviews, 
+                                                'pic' : returnUrl  
+                                            };
+
+                                            // console.log(dogFriendlyRestaurants);
+                                            //KATE HAS ADDED HERE
+                                            let dogFriendly = [];
+                
+                                            Object.keys(dogFriendlyRestaurants).forEach((key) => {
+                                                dogFriendly.push(dogFriendlyRestaurants[key]);
+                                            });
+                
+                                                console.log(dogFriendly)
+                                                const starthere = document.querySelector('#starthere');
+                                                starthere.innerHTML = renderRestaurants(dogFriendly);
+                                            
+                                        })
+                                        
+
                                     }
                                 }
                             })
 
-                            console.log(dogFriendlyRestaurants);
-                            //KATE HAS ADDED HERE
-                            let dogFriendly = [];
 
-                            Object.keys(dogFriendlyRestaurants).forEach((key) => {
-                                dogFriendly.push(dogFriendlyRestaurants[key]);
-                            });
-
-                                console.log(dogFriendly)
-                                const starthere = document.querySelector('#starthere');
-                                starthere.innerHTML = renderRestaurants(dogFriendly);
-                            
                         }
                     });
                     

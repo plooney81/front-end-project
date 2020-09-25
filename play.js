@@ -18,6 +18,7 @@ window.addEventListener('DOMContentLoaded', replaceDog());
 
 
 function renderPark(parkList) {
+
   var renderedPark = parkList.map(currentPark => {
       return `<div id="${currentPark.name}" class="card">
               <img style="card-img-top" src="${currentPark.pic}" alt="A photo of ${currentPark.name}">
@@ -28,7 +29,7 @@ function renderPark(parkList) {
               <a class="btn btn-primary" href="${currentPark.url}">Explore this park!</a>
               <button class="btn btn-success yes-button" onclick="yesParkList()">A+ Park!</button>
               <button class="btn btn-danger no-button" onclick="noParkList()">Delete From Favorites</button>
-              </div></div>`            
+              </div>`            
   });
   return renderedPark.join('');
 }
@@ -59,22 +60,6 @@ function noParkList(parkName) {
     noParkJSON = JSON.stringify(noPark);
     localStorage.setItem('noParkList', noParkJSON);
 
-// Render Function Code for dog parks
-//replaced by kate w/one at top
-// function renderParks(parksArray) {
-//     var renderedRestaurants = parksArray.map(individualPark => {
-//         return `<div id="${individualPark.name} class="card">
-//                     <div class="card-body"> 
-//                         <h5 class="card title">${individualPark.name}</h5>
-//                         <h2>Park Rating: ${individualPark.rating}</h2>
-//                         <h4>Address:</h4>
-//                         <h5>${individualPark.address}</h5>
-//                     </div>
-//                 </div>`            
-//     });
-//     return renderedRestaurants.join('');
-// }
-
 // We need to find a way to get the users address from the search bar
 // we also need to find a way to get the radius the user would like to see results for
 // but for now lets go ahead and hard code in the lat and long from the Cannon here in Houston
@@ -88,7 +73,6 @@ const searchRadius = 5000; // this needs to be in meters for the Google places a
 const urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the users address into an URI by replacing each instance of certain characters with %
 
 const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // our geocode api starting URL, we will add onto it in the axios request
-
 
 axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
     .then((response)=>{
@@ -137,6 +121,6 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
             const starthere = document.querySelector('#starthere');
             starthere.innerHTML = renderPark(actualParks);
         });
-    });
-}
 
+    })
+}

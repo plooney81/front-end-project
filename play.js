@@ -1,48 +1,3 @@
-function renderPark(parkList) {
-    var renderedPark = parkList.map(currentPark => {
-        return `<div id="${currentPark.name}" class="card">
-                <img style="card-img-top" src="${currentPark.pic}" alt="A photo of ${currentPark.name}">
-                <div class="card-body">
-                <h3 class="card title">${currentPark.name}</h3>
-                <h3 class="card rate">${currentPark.rating}</h3>
-                <p>At ${currentPark.address}</p>
-                <a class="btn btn-primary" href="${currentPark.url}">Explore this park!</a>
-                <button class="btn btn-success yes-button" onclick="yesParkList()">A+ Park!</button>
-                <button class="btn btn-danger no-button" onclick="noParkList()">Delete From Favorites</button>
-                </div></div>`
-    });
-    return renderedPark.join('');
-  }
-
-// We need to find a way to get the users address from the search bar
-// we also need to find a way to get the radius the user would like to see results for
-// but for now lets go ahead and hard code in the lat and long from the Cannon here in Houston
-let addressLat;
-let addressLong;
-let dogParkObject = {};
-
-const googleApiKey = 'AIzaSyCrK3yusa4V5Evj1A2cwdxkb_iUR-WLCVk'; // Key for the multiple google apis we will be pulling from.
-const userAddress = 'Houston'; //This will eventually change.
-const searchRadius = 5000; // this needs to be in meters for the Google places api, we can convert from the user giving in miles.
-const urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the users address into an URI by replacing each instance of certain characters with %
-
-const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // our geocode api starting URL, we will add onto it in the axios request
-
-// Render Function Code for dog parks
-// function renderParks(parksArray) {
-//     var renderedRestaurants = parksArray.map(individualPark => {
-//         return `<div id="${individualPark.name} class="card">
-//                     <div class="card-body"> 
-//                         <h5 class="card title">${individualPark.name}</h5>
-//                         <h2>Park Rating: ${individualPark.rating}</h2>
-//                         <h4>Address:</h4>
-//                         <h5>${individualPark.address}</h5>
-//                     </div>
-//                 </div>`            
-//     });
-//     return renderedRestaurants.join('');
-// }
-
 function replaceDog(){
     let gotDog = window.localStorage.getItem('dogkey');
     if(gotDog) {
@@ -58,7 +13,66 @@ function replaceDog(){
         placeDog.style.display="none";
     }
 }
+
 window.addEventListener('DOMContentLoaded', replaceDog());
+
+
+function renderPark(parkList) {
+
+  var renderedPark = parkList.map(currentPark => {
+      return `<div id="${currentPark.name}" class="card">
+              <img style="card-img-top" src="${currentPark.pic}" alt="A photo of ${currentPark.name}">
+              <div class="card-body"> 
+              <h3 class="card title">${currentPark.name}</h3>
+              <h3 class="card rate">${currentPark.rate}</h3>
+              <p>At ${currentPark.address}</p>
+              <a class="btn btn-primary" href="${currentPark.url}">Explore this park!</a>
+              <button class="btn btn-success yes-button" onclick="yesParkList()">A+ Park!</button>
+              <button class="btn btn-danger no-button" onclick="noParkList()">Delete From Favorites</button>
+              </div>`            
+  });
+  return renderedPark.join('');
+}
+
+function yesParkList(parkName) {
+    const park = actualParks[parkName];
+    let yesParkJSON = localStorage.getItem('yesParkList');
+    let yesPark = JSON.parse(yesParkJSON); 
+
+    if(yesPark == null) {
+        yesPark = [];
+    }
+    
+    yesPark.push(park);
+    yesParkJSON = JSON.stringify(yesPark);
+    localStorage.setItem('yesParkList', yesParkJSON);
+}
+
+function noParkList(parkName) {
+    const park = actualParks[parkName];
+    let noParkJSON = localStorage.getItem('noParkList');
+    let noPark = JSON.parse(noParkJSON);
+
+    if(noPark == null) {
+        noPark = [];
+    }
+    noPark.push(park);
+    noParkJSON = JSON.stringify(noPark);
+    localStorage.setItem('noParkList', noParkJSON);
+
+// We need to find a way to get the users address from the search bar
+// we also need to find a way to get the radius the user would like to see results for
+// but for now lets go ahead and hard code in the lat and long from the Cannon here in Houston
+let addressLat;
+let addressLong;
+let dogParkObject = {};
+
+const googleApiKey = 'AIzaSyCrK3yusa4V5Evj1A2cwdxkb_iUR-WLCVk'; // Key for the multiple google apis we will be pulling from.
+const userAddress = 'Houston'; //This will eventually change.
+const searchRadius = 5000; // this needs to be in meters for the Google places api, we can convert from the user giving in miles.
+const urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the users address into an URI by replacing each instance of certain characters with %
+
+const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // our geocode api starting URL, we will add onto it in the axios request
 
 axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
     .then((response)=>{
@@ -107,5 +121,6 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
             const starthere = document.querySelector('#starthere');
             starthere.innerHTML = renderPark(actualParks);
         });
+
     })
 }

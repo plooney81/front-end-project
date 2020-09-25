@@ -1,21 +1,12 @@
 // We need to find a way to get the users address from the search bar
 // we also need to find a way to get the radius the user would like to see results for
 // but for now lets go ahead and hard code in the lat and long from the Cannon here in Houston
-let addressLat;
-let addressLong;
-let restaurantObject = {};
-let regex = new RegExp('(?:dog|pet|animal)');
-let dogFriendlyRestaurants = {};
+
 
 const googleApiKey = 'AIzaSyCrK3yusa4V5Evj1A2cwdxkb_iUR-WLCVk'; // Key for the multiple google apis we will be pulling from.
-const userAddress = 'Houston'; //This will eventually change.
-const searchRadius = 5000; // this needs to be in meters for the Google places api, we can convert from the user giving in miles.
-const urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the users address into an URI by replacing each instance of certain characters with %
+
 
 const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // our geocode api starting URL, we will add onto it in the axios request
-const googlePlaces = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'; // our google places api starting URL, we add onto it in the second axios request
-const googlePlacesDetails = 'https://maps.googleapis.com/maps/api/place/details/json?';
-const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 
 //THIS BEGINS KATE'S CODE AND ENDS PETE'S CODE
 function renderRestaurants(friendlyRs) {
@@ -67,6 +58,7 @@ function noList(restaurantName) {
 
 }
 
+
 function replaceDog(){
     let gotDog = window.localStorage.getItem('dogkey');
     if(gotDog) {
@@ -103,13 +95,61 @@ async function returnFourSquarePicture(restName, lat, long, searchDistance){
                     // console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
                     return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`  
                 }else{
-                    return '#';
+
+                    if(secondResponse.data.response.photos.items[0]){
+                        // console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
+                        return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`
+                    }else{
+                        return '#';
+                    }
+
                 }
                 
             })
         })
 }
 // End of Petes addition
+
+
+// PETE ADDED BELOW
+// Jquery code below ---> so if I go back to master branch and change the hard coded userAddress everything works fine...but for some reason this is breaking it
+$(document).ready(()=>{
+    let addressLat;
+    let addressLong;
+    let regex = new RegExp('(?:dog|pet|animal)');
+    let userAddress = 'Dallas'; //This will eventually change.
+    let searchRadius = 5000; // this needs to be in meters for the Google places api, we can convert from the user giving in miles.
+    const $search = $('#search-bar');
+    const $searchButton = $('#search-Btn');
+    const $dropDown = $('#searchRadius-dropdown')
+    const $starthere = $('#starthere');
+    $starthere.empty();
+                                
+    $searchButton.click(()=>{
+        let dogFriendlyRestaurants = {};
+        $starthere.empty();
+        // grabs the value from the search radius dropdown 
+        if($dropDown.val()){
+            searchRadius = $dropDown.val();
+        }
+
+        // grabs the value from the input text box.
+        if($search.val()){
+            userAddress = $search.val();
+            // console.log(userAddress);
+        }
+
+        let urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the users address into an URI by replacing each instance of certain characters with %
+        axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
+            .then((response)=>{
+                // console.log(response.data);
+                addressLat = response.data.results[0].geometry.location.lat;
+                addressLong = response.data.results[0].geometry.location.lng;
+                console.log(addressLat, addressLong);
+                let loc = new google.maps.LatLng(addressLat, addressLong);
+                let map = new google.maps.Map(document.createElement('div'), { // May have to do with this div!
+                    center: loc,
+                    zoom: 15
 
 axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
     .then((response)=>{
@@ -186,13 +226,3 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
 
 
                         }
-                    });
-                    
-                })
-
-            }
-        });
-        
-    });
-
-

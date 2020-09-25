@@ -1,15 +1,18 @@
 function renderPark(parkList) {
-  var renderPark = parkList.map(currentPark => {
-      return `<div id="${currentpark.name} class="card">
-              <img style="card-img-top" src=${currentPark.pic} alt="A photo of ${park.name}">
-              <div class="card-body"> 
-              <h3 class="card title">${currentPark.name}</h3>
-              <h3 class="card rate">${currentPark.rate}<h3>
-              <a class="btn btn-primary" href="${currentPark.url}">Make a Reservation</a>
-              <button class="btn btn-danger delete">Delete From Favorites</button>
-              </div></div>`            
-  });
-  return renderedFavorites.join('');
+    var renderedPark = parkList.map(currentPark => {
+        return `<div id="${currentPark.name}" class="card">
+                <img style="card-img-top" src="${currentPark.pic}" alt="A photo of ${currentPark.name}">
+                <div class="card-body">
+                <h3 class="card title">${currentPark.name}</h3>
+                <h3 class="card rate">${currentPark.rating}</h3>
+                <p>At ${currentPark.address}</p>
+                <a class="btn btn-primary" href="${currentPark.url}">Explore this park!</a>
+                <button class="btn btn-success yes-button" onclick="yesParkList()">A+ Park!</button>
+                <button class="btn btn-danger no-button" onclick="noParkList()">Delete From Favorites</button>
+                </div></div>`
+    });
+    return renderedPark.join('');
+  }
 
 // We need to find a way to get the users address from the search bar
 // we also need to find a way to get the radius the user would like to see results for
@@ -26,19 +29,19 @@ const urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the us
 const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // our geocode api starting URL, we will add onto it in the axios request
 
 // Render Function Code for dog parks
-function renderParks(parksArray) {
-    var renderedRestaurants = parksArray.map(individualPark => {
-        return `<div id="${individualPark.name} class="card">
-                    <div class="card-body"> 
-                        <h5 class="card title">${individualPark.name}</h5>
-                        <h2>Park Rating: ${individualPark.rating}</h2>
-                        <h4>Address:</h4>
-                        <h5>${individualPark.address}</h5>
-                    </div>
-                </div>`            
-    });
-    return renderedRestaurants.join('');
-}
+// function renderParks(parksArray) {
+//     var renderedRestaurants = parksArray.map(individualPark => {
+//         return `<div id="${individualPark.name} class="card">
+//                     <div class="card-body"> 
+//                         <h5 class="card title">${individualPark.name}</h5>
+//                         <h2>Park Rating: ${individualPark.rating}</h2>
+//                         <h4>Address:</h4>
+//                         <h5>${individualPark.address}</h5>
+//                     </div>
+//                 </div>`            
+//     });
+//     return renderedRestaurants.join('');
+// }
 
 function replaceDog(){
     let gotDog = window.localStorage.getItem('dogkey');
@@ -102,7 +105,7 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
             
             console.log(actualParks)
             const starthere = document.querySelector('#starthere');
-            starthere.innerHTML = renderParks(actualParks);
+            starthere.innerHTML = renderPark(actualParks);
         });
     })
 }

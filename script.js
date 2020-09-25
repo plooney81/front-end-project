@@ -148,7 +148,7 @@ $(document).ready(()=>{
                             };
                             service.getDetails(request2, (place, status)=>{
                                 if (status == google.maps.places.PlacesServiceStatus.OK) {
-                                    // console.log(place);
+                                    console.log(place);
                                     const reviewsArray = place.reviews;
                                     
                                     reviewsArray.forEach((currentReview)=>{
@@ -159,7 +159,7 @@ $(document).ready(()=>{
                                             }else{
                                                 // Pete - added in a call for each place to get a FourSquare picture
                                                 returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((actualUrl=>{
-                                                                                                    // console.log(imgUrl);
+                                                // console.log(imgUrl);
                                                 dogFriendlyRestaurants[place.name] = {
                                                     'restaurantName' : place.name, 
                                                     'frequency': 1, 
@@ -175,10 +175,10 @@ $(document).ready(()=>{
                                                 Object.keys(dogFriendlyRestaurants).forEach((key) => {
                                                     dogFriendly.push(dogFriendlyRestaurants[key]);
                                                 });
-                                                    // console.log(dogFriendly)
-                                                    const starthere = document.querySelector('#starthere');
+                                                    console.log(dogFriendly)
+                                                    const starthere = $('#starthere');
                                                     starthere.innerHTML = renderRestaurants(dogFriendly);
-                                                            }))
+                                                }))
 
                                             }
                                         }

@@ -1,3 +1,16 @@
+function renderPark(parkList) {
+  var renderPark = parkList.map(currentPark => {
+      return `<div id="${currentpark.name} class="card">
+              <img style="card-img-top" src=${currentPark.pic} alt="A photo of ${park.name}">
+              <div class="card-body"> 
+              <h3 class="card title">${currentPark.name}</h3>
+              <h3 class="card rate">${currentPark.rate}<h3>
+              <a class="btn btn-primary" href="${currentPark.url}">Make a Reservation</a>
+              <button class="btn btn-danger delete">Delete From Favorites</button>
+              </div></div>`            
+  });
+  return renderedFavorites.join('');
+
 // We need to find a way to get the users address from the search bar
 // we also need to find a way to get the radius the user would like to see results for
 // but for now lets go ahead and hard code in the lat and long from the Cannon here in Houston
@@ -26,6 +39,23 @@ function renderParks(parksArray) {
     });
     return renderedRestaurants.join('');
 }
+
+function replaceDog(){
+    let gotDog = window.localStorage.getItem('dogkey');
+    if(gotDog) {
+        let dogicon = document.querySelector('.navbar img'); 
+        if(!dogicon){
+            dogicon = document.createElement('img');
+        }
+        
+        dogicon.setAttribute('src', gotDog);
+        dogicon.setAttribute('height', '20px');
+        placeDog = document.querySelector('.fas.fa-dog');
+        placeDog.parentNode.insertBefore(dogicon, placeDog.nextSibling);
+        placeDog.style.display="none";
+    }
+}
+window.addEventListener('DOMContentLoaded', replaceDog());
 
 axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
     .then((response)=>{
@@ -75,3 +105,4 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
             starthere.innerHTML = renderParks(actualParks);
         });
     })
+

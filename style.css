@@ -1,5 +1,5 @@
 .navbar-brand {
-  margin-left: 10px;
+  margin-left: 20px;
 }
 .button {
   align-items: center;
@@ -41,4 +41,8 @@
 .form-group {
   justify-content: center;
   padding-top: 40px;
+}
+
+.col {
+  margin: 30px 20px 30px 20px;
 }

@@ -92,17 +92,19 @@ $(document).ready(()=>{
     let addressLat;
     let addressLong;
     let regex = new RegExp('(?:dog|pet|animal)');
-    let dogFriendlyRestaurants = {};
     let userAddress = 'Dallas'; //This will eventually change.
     let searchRadius = 5000; // this needs to be in meters for the Google places api, we can convert from the user giving in miles.
-    
     const $search = $('#search-bar');
     const $searchButton = $('#search-Btn');
     const $dropDown = $('#searchRadius-dropdown')
+    const $starthere = $('#starthere');
+    $starthere.empty();
                                 
     $searchButton.click(()=>{
+        let dogFriendlyRestaurants = {};
+        $starthere.empty();
         // grabs the value from the search radius dropdown 
-        if($dropDown.val() !== ''){
+        if($dropDown.val()){
             searchRadius = $dropDown.val();
         }
 
@@ -115,7 +117,7 @@ $(document).ready(()=>{
         let urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the users address into an URI by replacing each instance of certain characters with %
         axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
             .then((response)=>{
-                console.log(response.data);
+                // console.log(response.data);
                 addressLat = response.data.results[0].geometry.location.lat;
                 addressLong = response.data.results[0].geometry.location.lng;
                 console.log(addressLat, addressLong);
@@ -148,7 +150,7 @@ $(document).ready(()=>{
                             };
                             service.getDetails(request2, (place, status)=>{
                                 if (status == google.maps.places.PlacesServiceStatus.OK) {
-                                    console.log(place);
+                                    // console.log(place);
                                     const reviewsArray = place.reviews;
                                     
                                     reviewsArray.forEach((currentReview)=>{
@@ -157,36 +159,35 @@ $(document).ready(()=>{
                                             if (dogFriendlyRestaurants[place.name]){
                                                 dogFriendlyRestaurants[place.name].frequency += 1;
                                             }else{
-                                                // Pete - added in a call for each place to get a FourSquare picture
-                                                returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((actualUrl=>{
-                                                // console.log(imgUrl);
                                                 dogFriendlyRestaurants[place.name] = {
                                                     'restaurantName' : place.name, 
                                                     'frequency': 1, 
                                                     'rating': place.rating, 
-                                                    'reviews': place.reviews, 
-                                                    'pic' : actualUrl
+                                                    'reviews': place.reviews,
+                                                    'pic': '#'
                                                 };
-
-                                                // console.log(dogFriendlyRestaurants);
-                                                //KATE HAS ADDED HERE
-                                                let dogFriendly = [];
-                    
-                                                Object.keys(dogFriendlyRestaurants).forEach((key) => {
-                                                    dogFriendly.push(dogFriendlyRestaurants[key]);
-                                                });
-                                                    console.log(dogFriendly)
-                                                    const starthere = $('#starthere');
-                                                    starthere.innerHTML = renderRestaurants(dogFriendly);
+                                                // Pete - added in a call for each place to get a FourSquare picture
+                                                returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((actualUrl=>{
+                                                    console.log(actualUrl);
+                                                    dogFriendlyRestaurants[place.name].pic = actualUrl;
                                                 }))
-
                                             }
                                         }
                                     })
         
-
+                                // console.log(dogFriendlyRestaurants);
+                                //KATE HAS ADDED HERE
+                                let dogFriendly = [];
+                                            
+                                Object.keys(dogFriendlyRestaurants).forEach((key) => {
+                                    dogFriendly.push(dogFriendlyRestaurants[key]);
+                                });
+                                // console.log(dogFriendly)
+                                $starthere.empty();
+                                $starthere.append(renderRestaurants(dogFriendly)); //WHY ISN"T THIS WORKING!!!!
                                     
                                 }
+
                             });
                             
                         })

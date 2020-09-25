@@ -1,6 +1,10 @@
 .navbar-brand {
   margin-left: 20px;
 }
+
+.container {
+  margin-top: 40px;
+}
 .button {
   align-items: center;
   display: flex;
@@ -19,6 +23,7 @@
   height: 35px;
   width: 800px;
   border-radius: 10px;
+  outline: none;
 }
 
 #search-Btn {
@@ -26,7 +31,9 @@
   border-radius: 10px;
 }
 
-.eatImg,
+#about_You:hover {
+  background-blend-mode: bisque;
+}
 .playImg {
   height: 30%;
   width: 40%;

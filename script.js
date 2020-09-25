@@ -150,79 +150,77 @@ $(document).ready(()=>{
                 let map = new google.maps.Map(document.createElement('div'), { // May have to do with this div!
                     center: loc,
                     zoom: 15
-
-axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
-    .then((response)=>{
-        console.log(response.data);
-        addressLat = response.data.results[0].geometry.location.lat;
-        addressLong = response.data.results[0].geometry.location.lng;
-        let loc = new google.maps.LatLng(addressLat, addressLong);
-        let map = new google.maps.Map(document.createElement('div'), {
-            center: loc,
-            zoom: 15
-            });
-        
-        let service = new google.maps.places.PlacesService(map);
-        
-        
-        let request = {
-            location: loc,
-            radius: `${searchRadius}`,
-            query: 'restaurant'
-        };
-        service.textSearch(request, (results, status)=>{
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                restaurantObject = results;
-                // console.log(restaurantObject);
-                const restArray = restaurantObject.map((currentRestaurant)=>{
-                    return currentRestaurant.place_id; //only returns the place_id from the restaurant data, when then loop over the ID's to get the details api information.
-                })
-                // console.log(restArray);
-                const placeDetailsArray = restArray.map((currentId)=>{
-                    let request2 = {
-                        placeId: currentId,
-                        fields: ['name', 'rating', 'geometry', 'reviews']
-                    };
-                    service.getDetails(request2, (place, status)=>{
-                        if (status == google.maps.places.PlacesServiceStatus.OK) {
-                            // console.log(place);
-                            const reviewsArray = place.reviews;
-                            
-                            reviewsArray.forEach((currentReview)=>{
-                                // console.log(regex.test(currentReview.text));
-                                if(regex.test(currentReview.text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
-                                    if (dogFriendlyRestaurants[place.name]){
-                                        dogFriendlyRestaurants[place.name].frequency += 1;
-                                    }else{
-                                        // Pete - added in a call for each place to get a FourSquare picture
-                                        returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((returnUrl)=>{
-                                            // console.log(returnUrl)
-                                            dogFriendlyRestaurants[place.name] = {
-                                                'restaurantName' : place.name, 
-                                                'frequency': 1, 
-                                                'rating': place.rating, 
-                                                'reviews': place.reviews, 
-                                                'pic' : returnUrl  
-                                            };
-
-                                            // console.log(dogFriendlyRestaurants);
-                                            //KATE HAS ADDED HERE
-                                            let dogFriendly = [];
+                    });
                 
-                                            Object.keys(dogFriendlyRestaurants).forEach((key) => {
-                                                dogFriendly.push(dogFriendlyRestaurants[key]);
-                                            });
+                let service = new google.maps.places.PlacesService(map);
                 
-                                                console.log(dogFriendly)
-                                                const starthere = document.querySelector('#starthere');
-                                                starthere.innerHTML = renderRestaurants(dogFriendly);
+                let request = {
+                    location: loc,
+                    radius: `${searchRadius}`,
+                    query: 'restaurant',
+                    
+                };
+                service.textSearch(request, (results, status)=>{
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        let restaurantObject = results;
+                        console.log(restaurantObject);
+                        const restArray = restaurantObject.map((currentRestaurant)=>{
+                            return currentRestaurant.place_id; //only returns the place_id from the restaurant data, when then loop over the ID's to get the details api information.
+                        })
+                        // console.log(restArray);
+                        const placeDetailsArray = restArray.map((currentId)=>{
+                            let request2 = {
+                                placeId: currentId,
+                                fields: ['name', 'rating', 'geometry', 'reviews']
+                            };
+                            service.getDetails(request2, (place, status)=>{
+                                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                                    // console.log(place);
+                                    const reviewsArray = place.reviews;
+                                    
+                                    reviewsArray.forEach((currentReview)=>{
+                                        // console.log(regex.test(currentReview.text));
+                                        if(regex.test(currentReview.text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
+                                            if (dogFriendlyRestaurants[place.name]){
+                                                dogFriendlyRestaurants[place.name].frequency += 1;
+                                            }else{
+                                                dogFriendlyRestaurants[place.name] = {
+                                                    'restaurantName' : place.name, 
+                                                    'frequency': 1, 
+                                                    'rating': place.rating, 
+                                                    'reviews': place.reviews,
+                                                    'pic': '#'
+                                                };
+                                                // Pete - added in a call for each place to get a FourSquare picture
+                                                returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((actualUrl=>{
+                                                    console.log(actualUrl);
+                                                    dogFriendlyRestaurants[place.name].pic = actualUrl;
+                                                }))
+                                            }
+                                        }
+                                    })
+        
+                                // console.log(dogFriendlyRestaurants);
+                                //KATE HAS ADDED HERE
+                                let dogFriendly = [];
                                             
-                                        })
-                                        
-
-                                    }
+                                Object.keys(dogFriendlyRestaurants).forEach((key) => {
+                                    dogFriendly.push(dogFriendlyRestaurants[key]);
+                                });
+                                // console.log(dogFriendly)
+                                $starthere.empty();
+                                $starthere.append(renderRestaurants(dogFriendly)); //WHY ISN"T THIS WORKING!!!!
+                                    
                                 }
-                            })
 
+                            });
+                            
+                        })
+        
+                    }
+                });
+                
+            });
+    })
 
-                        }
+})

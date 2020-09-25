@@ -52,7 +52,7 @@ function renderUnfriendly(hatelist) {
         <p style="padding: 0%; margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">According to <strong>user reviews</strong>, this is a....</p>
         <h4 style="margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${individualrestaurant.rating}-Star Restaurant, and is </h4>
         <h4 style="margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif"><strong>0%</strong> Likely to Be Dog-Friendly</h4>
-        <button class="no-delete btn btn-danger delete">Remove from My List</button>
+        <button class="yespark-delete btn btn-danger delete">Remove from My List</button>
         </div>`            
     });
     return renderedUnfriendly.join('');
@@ -66,7 +66,7 @@ function renderHatePark(hateparklist) {
         <h5 style="text-align: center; color: antiquewhite; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; border-radius:20px; border: 9px solid white">${currentpark.name}</h5>
         <p style="padding:0%; margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">According to <strong>you</strong>, this is...</p>
         <h4 style="margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">$ZERO-Star Dog Park</h4>
-        <button class="yes-delete btn btn-danger delete"> Remove from My List</button>
+        <button class="nopark-delete btn btn-danger delete"> Remove from My List</button>
         </div>`
 
 });
@@ -121,6 +121,27 @@ window.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             hatelist.splice(x, 1);
             localStorage.setItem('noList', JSON.stringify(hatelist));
+            event.target.parentNode.remove();
+        })
+    }
+    
+    const deleteButton3 = document.querySelectorAll('.yespark-delete');
+    for(let x = 0; x<deleteButton3.length; x++){
+        deleteButton3[x].addEventListener('click', function(event)
+        {
+            event.preventDefault();
+            favesparklist.splice(x, 1);
+            localStorage.setItem('yesParkList', JSON.stringify(favesparklist));
+            event.target.parentNode.remove();
+        })
+    }
+
+    const deleteButton4 = document.querySelectorAll('.nopark-delete');
+    for(let x=0; x<deleteButton4.length; x++) {
+        deleteButton4[x].addEventListener('click', function(event){
+            event.preventDefault();
+            hatesparklist.splice(x, 1);
+            localStorage.setItem('noParkList', JSON.stringify(hatesparklist));
             event.target.parentNode.remove();
         })
     }

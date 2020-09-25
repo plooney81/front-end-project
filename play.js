@@ -105,4 +105,4 @@ axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`
             starthere.innerHTML = renderParks(actualParks);
         });
     })
-
+}

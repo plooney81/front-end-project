@@ -81,14 +81,22 @@
     </nav>
     
     <div class="search">
-      <input
-        type="search"
-        id="search-bar"
-        name="q"
-        aria-label="Search through site content"
-      />
-      <button class="btn btn-success" id="search-Btn">Search</button>
-    </div>
+      <div class="form-group pt-3 mr-3">
+        <select class="form-control" id="searchRadius-dropdown">
+          <option class="dropdown-item" value='' selected disabled>Choose Search Radius</option>
+          <option class="dropdown-item" value='1500'>1 mile</option>
+          <option class="dropdown-item" value='3000'>2 miles</option>
+          <option class="dropdown-item" value='5000'>3 miles</option>
+        </select>
+      </div>
+    <input
+      type="search"
+      id="search-bar"
+      name="q"
+      aria-label="Search through site content"
+    />
+    <button class="btn btn-success" id="search-Btn">Search</button>
+  </div>
     
     <!-- PETE ADDED DIV ID for our render function -->
     <div class="row row-cols-1 row-cols-md-3" id="starthere">

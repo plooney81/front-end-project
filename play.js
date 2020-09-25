@@ -17,21 +17,19 @@ function replaceDog() {
 window.addEventListener('DOMContentLoaded', replaceDog());
 
 
-function renderPark(parkList) {
+function renderPark(currentPark) {
 
-    var renderedPark = parkList.map(currentPark => {
         return `<div id="${currentPark.name}" class="card">
-              <img style="card-img-top" src="${currentPark.pic}" alt="A photo of ${currentPark.name}">
+              <img style="card-img-top" src="${currentPark.pic}" alt="A random picture of a dog" style="height: 150; width: 200;">
               <div class="card-body"> 
               <h3 class="card title">${currentPark.name}</h3>
-              <h3 class="card rate">${currentPark.rate}</h3>
+              <h3 class="card rate">Rating: ${currentPark.rating}</h3>
               <p>At ${currentPark.address}</p>
               <a class="btn btn-primary" href="${currentPark.url}">Explore this park!</a>
               <button class="btn btn-success yes-button" onclick="yesParkList()">A+ Park!</button>
               <button class="btn btn-danger no-button" onclick="noParkList()">Delete From Favorites</button>
-              </div>`
-    });
-    return renderedPark.join('');
+              </div></div>`
+
 }
 
 function yesParkList(parkName) {
@@ -60,12 +58,24 @@ function noParkList(parkName) {
     noParkJSON = JSON.stringify(noPark);
     localStorage.setItem('noParkList', noParkJSON);
 }
+
+// Pete added a function that grabs a picture from the dog picture API.button
+async function returnRandomDogPicture(){
+    return axios.get('https://dog.ceo/api/breeds/image/random')
+        .then((response)=>{
+            return response.data.message
+        })
+}
+
+
 // We need to find a way to get the users address from the search bar
 // we also need to find a way to get the radius the user would like to see results for
 // but for now lets go ahead and hard code in the lat and long from the Cannon here in Houston
 let addressLat;
 let addressLong;
-let dogParkObject = {};
+// let dogParkObject = {};
+// let dogParkArray = [];
+// let actualParks = [];
 
 const googleApiKey = 'AIzaSyCrK3yusa4V5Evj1A2cwdxkb_iUR-WLCVk'; // Key for the multiple google apis we will be pulling from.
 //const searchRadius = 5000; // this needs to be in meters for the Google places api, we can convert from the user giving in miles.
@@ -76,7 +86,8 @@ const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // o
 // BEGINS SEARCH SEQUENCE CODED BY KATE
 
 window.addEventListener('DOMContentLoaded', function () {
-
+    const $starthere = $('#starthere');
+    $starthere.empty();
     var dropdown = document.querySelector('#searchRadius-dropdown');
     dropdown.addEventListener('change', function () {
         localStorage.setItem('searchradius', dropdown.value);
@@ -114,39 +125,47 @@ window.addEventListener('DOMContentLoaded', function () {
                 });
 
                 let service = new google.maps.places.PlacesService(map);
-
+                
                 let request = {
                     location: loc,
                     radius: localStorage.getItem('searchradius') || 1000,
                     query: 'dog park'
                 }
-
+                
                 service.textSearch(request, (results, status) => {
                     if (status == google.maps.places.PlacesServiceStatus.OK) {
                         let parkSearchResults = results;
                         console.log(parkSearchResults);
-                        const parkArray = parkSearchResults.map((currentPark) => {
-                            // if(currentPark.photos[0]){
-                            //     console.log(currentPark.photos[0].html_attributions[0])
-                            // }
-                            let tempObject = {
+                        parkSearchResults.forEach(async (currentPark) => {
+                            let dogParkObject;
+                            console.log(currentPark)
+                            dogParkObject = {
                                 'name': currentPark.name,
                                 'address': currentPark.formatted_address,
                                 'rating': currentPark.rating
                             };
-                            return tempObject;
-                        })
-                        dogParkObject = parkArray;
-                        let actualParks = [];
-                        Object.keys(dogParkObject).forEach((key) => {
-                        actualParks.push(dogParkObject[key]);
-                    });
-                    console.log(actualParks)
-                    const starthere = document.querySelector('#starthere');
-                    starthere.innerHTML = renderPark(actualParks);
+                            await returnRandomDogPicture().then((randomPic)=>{
+                                dogParkObject['pic'] = randomPic;
+                                // dogParkArray.push(dogParkObject);
+                                // console.log(dogParkArray);
+                                // const starthere = document.querySelector('#starthere');
+                                // dogParkArray.forEach((park)=>{
+                                // starthere.innerHTML += renderPark(park);
+                                // })
+                            });
+                            const starthere = document.querySelector('#starthere');
+                            starthere.innerHTML += renderPark(dogParkObject);
+                        });
+                        
+                        
+                        // Object.keys(dogParkObject).forEach((key) => {
+                        //     console.log(dogParkObject[key])
+                        //     actualParks.push(dogParkObject[key]);
+                        // });
+                        // console.log(actualParks)
+
                     }
                 });
-
             })
     });
 })

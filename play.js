@@ -60,6 +60,7 @@ function noParkList(parkName) {
 }
 
 // Pete added a function that grabs a picture from the dog picture API.button
+// Kate has copied this function over to the about-us page to streamline current design
 async function returnRandomDogPicture(){
     return axios.get('https://dog.ceo/api/breeds/image/random')
         .then((response)=>{

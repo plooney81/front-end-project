@@ -14,6 +14,21 @@ function replaceDog(){
     }
 }
 
+var dogpic;
+//Pete's function, copied in and experimented with by Kate
+function returnRandomDogPicture(){
+    fetch('https://dog.ceo/api/breeds/image/random')
+    .then(function(response){ 
+        dogpic = response.message;
+        console.log(dogpic);
+        return dogpic
+    })
+    .then(function(dogpic){
+        console.log(dogpic);
+        window.localStorage.setItem('dogkey', dogpic);
+    })
+}
+
 window.addEventListener('DOMContentLoaded', function(){
 
     fetch('./about-us.txt')
@@ -39,18 +54,20 @@ window.addEventListener('DOMContentLoaded', function(){
         if(file.type.match(isitImage)) {
             reader.addEventListener('load', function(){
                 //this gets the file that the user inputted and turns the result into something that can be displayed as an image
-                let dogpic = reader.result
+                dogpic = reader.result
 
-                let thisDog = window.localStorage.setItem('dogkey', dogpic);
+                window.localStorage.setItem('dogkey', dogpic);
                 
-                buff.innerHTML = buff.innerHTML + `<img src=${dogpic}></img>`
+                buff.innerHTML = `<img src=${dogpic}></img>`
                 replaceDog();
 
             })
         reader.readAsDataURL(file);
         }
         else {
-            output.innerHTML = 'File type not supported; please enter an image of your doggo!'
+            alert("The file type you entered was not supported.\nSo the Fetch Team has assigned you a heckin' random pic!");
+            buff.innerHTML =  `<img src=${dogpic}></img>`
+            replaceDog();
         }
 
         

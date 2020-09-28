@@ -8,7 +8,6 @@ const googleApiKey = 'AIzaSyCrK3yusa4V5Evj1A2cwdxkb_iUR-WLCVk'; // Key for the m
 
 const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // our geocode api starting URL, we will add onto it in the axios request
 
-//THIS BEGINS KATE'S CODE AND ENDS PETE'S CODE
 function renderRestaurants(friendlyRs) {
         //calculates the confidence % that each restaurant is dog-friendly based on user ratings
         var confidencerating = (friendlyRs.frequency*5) + 50.5; 
@@ -75,9 +74,7 @@ function replaceDog(){
 }
 window.addEventListener('DOMContentLoaded', replaceDog());
 
-//THIS ENDS KATE'S CODE AND STARTS PETE'S CODE
 
-// Pete added on here
 async function returnFourSquarePicture(restName, lat, long, searchDistance){
     let fourSquareRestId;
     const fourUrl = 'https://api.foursquare.com/v2/venues/';
@@ -91,12 +88,10 @@ async function returnFourSquarePicture(restName, lat, long, searchDistance){
         return await axios.get(`${fourUrl}${fourSquareRestId}/photos?${fourKey}`)
             .then((secondResponse)=>{
                 if(secondResponse.data.response.photos.items[0]){
-                    // console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
                     return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`  
                 }else{
 
                     if(secondResponse.data.response.photos.items[0]){
-                        // console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
                         return `${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`
                     }else{
                         return '#';
@@ -107,10 +102,8 @@ async function returnFourSquarePicture(restName, lat, long, searchDistance){
             })
         })
 }
-// End of Petes addition
 
 
-// PETE ADDED BELOW
 // Jquery code below ---> so if I go back to master branch and change the hard coded userAddress everything works fine...but for some reason this is breaking it
 $(document).ready(()=>{
     let addressLat;
@@ -135,18 +128,16 @@ $(document).ready(()=>{
         // grabs the value from the input text box.
         if($search.val()){
             userAddress = $search.val();
-            // console.log(userAddress);
         }
 
         let urlEncodedUserAddress = encodeURIComponent(userAddress); // encodes the users address into an URI by replacing each instance of certain characters with %
         axios.get(`${googleGeocode}address=${urlEncodedUserAddress}&key=${googleApiKey}`)
             .then((response)=>{
-                // console.log(response.data);
                 addressLat = response.data.results[0].geometry.location.lat;
                 addressLong = response.data.results[0].geometry.location.lng;
                 console.log(addressLat, addressLong);
                 let loc = new google.maps.LatLng(addressLat, addressLong);
-                let map = new google.maps.Map(document.createElement('div'), { // May have to do with this div!
+                let map = new google.maps.Map(document.createElement('div'), {
                     center: loc,
                     zoom: 15
                     });
@@ -166,7 +157,6 @@ $(document).ready(()=>{
                         const restArray = restaurantObject.map((currentRestaurant)=>{
                             return currentRestaurant.place_id; //only returns the place_id from the restaurant data, when then loop over the ID's to get the details api information.
                         })
-                        // console.log(restArray);
                         const placeDetailsArray = restArray.map((currentId)=>{
                             let request2 = {
                                 placeId: currentId,
@@ -174,12 +164,10 @@ $(document).ready(()=>{
                             };
                             service.getDetails(request2, (place, status)=>{
                                 if (status == google.maps.places.PlacesServiceStatus.OK) {
-                                    // console.log(place);
                                     const reviewsArray = place.reviews;
                                     
                                     reviewsArray.forEach(async(currentReview)=>{
-                                        // console.log(regex.test(currentReview.text));
-                                        if(regex.test(currentReview.text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
+                                        if(regex.test(currentReview.text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them.
                                             if (dogFriendlyRestaurants[place.name]){
                                                 dogFriendlyRestaurants[place.name].frequency += 1;
                                             }else{
@@ -190,7 +178,7 @@ $(document).ready(()=>{
                                                     'reviews': place.reviews,
                                                     'pic': '#'
                                                 };
-                                                // Pete - added in a call for each place to get a FourSquare picture
+                                                // call for each place to get a FourSquare picture
                                                 await returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((actualUrl=>{
                                                     dogFriendlyRestaurants[place.name].pic = actualUrl;
                                                 }))
@@ -198,17 +186,6 @@ $(document).ready(()=>{
                                             }
                                         }
                                     })
-        
-                                // // console.log(dogFriendlyRestaurants);
-                                // //KATE HAS ADDED HERE
-                                // let dogFriendly = [];
-                                            
-                                // Object.keys(dogFriendlyRestaurants).forEach((key) => {
-                                //     dogFriendly.push(dogFriendlyRestaurants[key]);
-                                // });
-                                // // console.log(dogFriendly)
-                                // $starthere.empty();
-                                // $starthere.append(renderRestaurants(dogFriendly));
                                     
                                 }
 

@@ -20,7 +20,9 @@ window.addEventListener('DOMContentLoaded', replaceDog());
 function renderPark(currentPark) {
 
         return `<div id="${currentPark.name}" class="card">
-              <img style="card-img-top" src="${currentPark.pic}" alt="A random picture of a dog" style="height: 150; width: 200;">
+              <div class="d-flex justify-content-center align-items-center">
+                <img class="card-img-top" src="${currentPark.pic}" alt="A random picture of a dog" style="height: auto; width: 30vw;">
+              </div>
               <div class="card-body"> 
               <h3 class="card title">${currentPark.name}</h3>
               <h3 class="card rate">Rating: ${currentPark.rating}</h3>
@@ -103,6 +105,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     var searchButton = document.querySelector('#search-Btn');
     searchButton.addEventListener('click', function (event) {
+        $starthere.empty();
         event.preventDefault();
 
         axios.get(`${googleGeocode}address=${userAddress}&key=${googleApiKey}`)

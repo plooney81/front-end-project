@@ -17,15 +17,14 @@ function replaceDog(){
 var dogpic;
 //Pete's function, copied in and experimented with by Kate
 function returnRandomDogPicture(){
-    fetch('https://dog.ceo/api/breeds/image/random')
-    .then(function(response){ 
-        dogpic = response.message;
-        console.log(dogpic);
-        return dogpic
+    return fetch('https://dog.ceo/api/breeds/image/random')
+    .then(function(response){
+        return response.json();
     })
-    .then(function(dogpic){
-        console.log(dogpic);
+    .then(function(data){ 
+        dogpic = data.message;
         window.localStorage.setItem('dogkey', dogpic);
+        return dogpic;
     })
 }
 
@@ -66,8 +65,10 @@ window.addEventListener('DOMContentLoaded', function(){
         }
         else {
             alert("The file type you entered was not supported.\nSo the Fetch Team has assigned you a heckin' random pic!");
-            buff.innerHTML =  `<img src=${dogpic}></img>`
-            replaceDog();
+            returnRandomDogPicture().then(function(dogpic){        
+                buff.innerHTML =  `<img src=${dogpic}></img>`
+                replaceDog();
+            });
         }
 
         

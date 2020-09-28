@@ -1,7 +1,7 @@
 // We need to find a way to get the users address from the search bar
 // we also need to find a way to get the radius the user would like to see results for
 // but for now lets go ahead and hard code in the lat and long from the Cannon here in Houston
-
+let dogFriendlyRestaurants = {};
 
 const googleApiKey = 'AIzaSyCrK3yusa4V5Evj1A2cwdxkb_iUR-WLCVk'; // Key for the multiple google apis we will be pulling from.
 
@@ -125,7 +125,7 @@ $(document).ready(()=>{
     $starthere.empty();
                                 
     $searchButton.click(()=>{
-        let dogFriendlyRestaurants = {};
+        dogFriendlyRestaurants = {};
         $starthere.empty();
         // grabs the value from the search radius dropdown 
         if($dropDown.val()){
@@ -192,10 +192,8 @@ $(document).ready(()=>{
                                                 };
                                                 // Pete - added in a call for each place to get a FourSquare picture
                                                 await returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((actualUrl=>{
-                                                    console.log(actualUrl);
                                                     dogFriendlyRestaurants[place.name].pic = actualUrl;
                                                 }))
-                                                console.log(renderRestaurants(dogFriendlyRestaurants[place.name]));
                                                 $starthere.append(renderRestaurants(dogFriendlyRestaurants[place.name]));
                                             }
                                         }

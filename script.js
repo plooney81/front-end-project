@@ -10,25 +10,22 @@ const googleGeocode = 'https://maps.googleapis.com/maps/api/geocode/json?'; // o
 
 //THIS BEGINS KATE'S CODE AND ENDS PETE'S CODE
 function renderRestaurants(friendlyRs) {
-    var renderedRestaurants = friendlyRs.map(individualrestaurant => {
-        
         //calculates the confidence % that each restaurant is dog-friendly based on user ratings
-        var confidencerating = (individualrestaurant.frequency*5) + 50.5; 
+        var confidencerating = (friendlyRs.frequency*5) + 50.5; 
 
         //the onclick attribute in the button class executes the yes or noList functions
         return `<div style="background-color: cornsilk; border-radius: 20px; border: 4px solid black; margin-bottom: 40px; margin-left:40px">
-                <h4 style="text-align: center; color: cornflowerblue; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; border-radius:20px; border: 9px solid aquamarine;">${individualrestaurant.restaurantName}</h4>
+                <h4 style="text-align: center; color: cornflowerblue; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; border-radius:20px; border: 9px solid aquamarine;">${friendlyRs.restaurantName}</h4>
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="${individualrestaurant.pic}" alt="A picture pulled from a FourSquare user of the ${individualrestaurant.restaurantName}" style="margin: 0 auto;">
+                    <img src="${friendlyRs.pic}" alt="A picture pulled from a FourSquare user of the ${friendlyRs.restaurantName}" style="margin: 0 auto;">
                 </div>
                 <p style="padding: 0%; margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">According to <strong>user reviews</strong>, this is a....</p>
-                <h5 style="margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${individualrestaurant.rating}-Star Restaurant, and is </h5>
+                <h5 style="margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${friendlyRs.rating}-Star Restaurant, and is </h5>
                 <h5 style="margin: 2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${confidencerating}% Likely to Be Dog-Friendly</h5>
-                <button class="btn btn-success" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif" onclick="yesList('${individualrestaurant.restaurantName}')">Pawsitively Friendly!</button>
-                <button class="btn btn-danger delete" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif" onclick="noList('${individualrestaurant.restaurantName}')">Doesn't Accept Dogs</button> 
+                <button class="btn btn-success" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif" onclick="yesList('${friendlyRs.restaurantName}')">Pawsitively Friendly!</button>
+                <button class="btn btn-danger delete" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif" onclick="noList('${friendlyRs.restaurantName}')">Doesn't Accept Dogs</button> 
                 </div>`            
-    });
-    return renderedRestaurants.join('');
+
 }
 
 function yesList(restaurantName) {
@@ -198,20 +195,22 @@ $(document).ready(()=>{
                                                     console.log(actualUrl);
                                                     dogFriendlyRestaurants[place.name].pic = actualUrl;
                                                 }))
+                                                console.log(renderRestaurants(dogFriendlyRestaurants[place.name]));
+                                                $starthere.append(renderRestaurants(dogFriendlyRestaurants[place.name]));
                                             }
                                         }
                                     })
         
-                                // console.log(dogFriendlyRestaurants);
-                                //KATE HAS ADDED HERE
-                                let dogFriendly = [];
+                                // // console.log(dogFriendlyRestaurants);
+                                // //KATE HAS ADDED HERE
+                                // let dogFriendly = [];
                                             
-                                Object.keys(dogFriendlyRestaurants).forEach((key) => {
-                                    dogFriendly.push(dogFriendlyRestaurants[key]);
-                                });
-                                // console.log(dogFriendly)
-                                $starthere.empty();
-                                $starthere.append(renderRestaurants(dogFriendly));
+                                // Object.keys(dogFriendlyRestaurants).forEach((key) => {
+                                //     dogFriendly.push(dogFriendlyRestaurants[key]);
+                                // });
+                                // // console.log(dogFriendly)
+                                // $starthere.empty();
+                                // $starthere.append(renderRestaurants(dogFriendly));
                                     
                                 }
 

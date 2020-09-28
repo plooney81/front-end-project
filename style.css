@@ -2,7 +2,19 @@
   margin-left: 20px;
 }
 
+.d-block {
+  display: block;
+  text-align: center;
+  padding-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  object-fit: contain;
+}
+
 .container {
+  margin-top: 40px;
+}
+.jumbotron {
   margin-top: 40px;
 }
 .button {

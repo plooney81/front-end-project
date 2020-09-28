@@ -86,8 +86,13 @@ window.addEventListener('DOMContentLoaded', function() {
     var faveParksHere=document.querySelector('#favespark');
 
     //puts the JSON magic into the HTML as HTML
-    favesHere.innerHTML = renderFavorites(faveslist);
-    faveParksHere.innerHTML = renderedFaveParks(faveparklist);
+    if(faveslist){
+        favesHere.innerHTML = renderFavorites(faveslist);
+    }
+    if(faveparklist){
+        faveParksHere.innerHTML = renderFavePark(faveparklist);
+    }
+    
     
     //does JSON magic to the hatelist for the same stuff as before(ie, take from push and render)
     var hatelistJSON = localStorage.getItem('noList');
@@ -100,8 +105,12 @@ window.addEventListener('DOMContentLoaded', function() {
     var unfriendlyHere = document.querySelector('#unfaves');
 
     // + sign there in case of accidental overwrite of fave list
-    unfriendlyHere.innerHTML = renderUnfriendly(hatelist);
-    unfriendlyParksHere.innerHTML = renderedHateParks(hatesparklist);
+    if(hatelist){
+        unfriendlyHere.innerHTML = renderUnfriendly(hatelist);
+    }
+    if(hatesparklist){
+        unfriendlyParksHere.innerHTML = renderedHateParks(hatesparklist);
+    }
 
     //
     const deleteButtons = document.querySelectorAll('.yes-delete');

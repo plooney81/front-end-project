@@ -154,14 +154,6 @@ window.addEventListener('DOMContentLoaded', function () {
                             const starthere = document.querySelector('#starthere');
                             starthere.innerHTML += renderPark(dogParkObject);
                         });
-                        
-                        
-                        // Object.keys(dogParkObject).forEach((key) => {
-                        //     console.log(dogParkObject[key])
-                        //     actualParks.push(dogParkObject[key]);
-                        // });
-                        // console.log(actualParks)
-
                     }
                 });
             })

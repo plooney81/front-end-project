@@ -150,12 +150,6 @@ window.addEventListener('DOMContentLoaded', function () {
                             };
                             await returnRandomDogPicture().then((randomPic)=>{
                                 dogParkObject['pic'] = randomPic;
-                                // dogParkArray.push(dogParkObject);
-                                // console.log(dogParkArray);
-                                // const starthere = document.querySelector('#starthere');
-                                // dogParkArray.forEach((park)=>{
-                                // starthere.innerHTML += renderPark(park);
-                                // })
                             });
                             const starthere = document.querySelector('#starthere');
                             starthere.innerHTML += renderPark(dogParkObject);

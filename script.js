@@ -18,7 +18,9 @@ function renderRestaurants(friendlyRs) {
         //the onclick attribute in the button class executes the yes or noList functions
         return `<div style="background-color: cornsilk; border-radius: 20px; border: 4px solid black; margin-bottom: 40px; margin-left:40px">
                 <h4 style="text-align: center; color: cornflowerblue; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; border-radius:20px; border: 9px solid aquamarine;">${individualrestaurant.restaurantName}</h4>
-                <img src="${individualrestaurant.pic}" alt="A picture pulled from a FourSquare user of the ${individualrestaurant.restaurantName}">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="${individualrestaurant.pic}" alt="A picture pulled from a FourSquare user of the ${individualrestaurant.restaurantName}" style="margin: 0 auto;">
+                </div>
                 <p style="padding: 0%; margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">According to <strong>user reviews</strong>, this is a....</p>
                 <h5 style="margin:2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${individualrestaurant.rating}-Star Restaurant, and is </h5>
                 <h5 style="margin: 2px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">${confidencerating}% Likely to Be Dog-Friendly</h5>
@@ -85,11 +87,11 @@ async function returnFourSquarePicture(restName, lat, long, searchDistance){
     const fourKey = 'client_id=XLIUJFK3AC0GVEAG1MOA5RMJQTD2YA4JEVDOX0JA0T5LH0YB&client_secret=ZYDJHE4KNUFCC321PKTU520B4KU1CJA2ZBTINIWWY1IZTH5E&v=20200924';
     restName = encodeURIComponent(restName);
     // another axios for foursquare to get pictures of the restaurants
-    return axios.get(`${fourUrl}search?ll=${lat},${long}&radius=${searchDistance}&query=${restName}&categoryId=4d4b7105d754a06374d81259&limit=1&${fourKey}`)
-        .then((res)=>{
+    return await axios.get(`${fourUrl}search?ll=${lat},${long}&radius=${searchDistance}&query=${restName}&categoryId=4d4b7105d754a06374d81259&limit=1&${fourKey}`)
+        .then(async (res)=>{
             fourSquareRestId = res.data.response.venues[0].id;
             // another axios on four using the restaurants foursquare ID so we can get pictures and URLS for the place.
-        return axios.get(`${fourUrl}${fourSquareRestId}/photos?${fourKey}`)
+        return await axios.get(`${fourUrl}${fourSquareRestId}/photos?${fourKey}`)
             .then((secondResponse)=>{
                 if(secondResponse.data.response.photos.items[0]){
                     // console.log(`${secondResponse.data.response.photos.items[0].prefix}150x200${secondResponse.data.response.photos.items[0].suffix}`)
@@ -178,7 +180,7 @@ $(document).ready(()=>{
                                     // console.log(place);
                                     const reviewsArray = place.reviews;
                                     
-                                    reviewsArray.forEach((currentReview)=>{
+                                    reviewsArray.forEach(async(currentReview)=>{
                                         // console.log(regex.test(currentReview.text));
                                         if(regex.test(currentReview.text)){//So It will basically loop over the reviews array and hopefully will find the reviews with dog/pet/animal friendly in them...fingers crossed.
                                             if (dogFriendlyRestaurants[place.name]){
@@ -192,7 +194,7 @@ $(document).ready(()=>{
                                                     'pic': '#'
                                                 };
                                                 // Pete - added in a call for each place to get a FourSquare picture
-                                                returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((actualUrl=>{
+                                                await returnFourSquarePicture(place.name, addressLat, addressLong, searchRadius).then((actualUrl=>{
                                                     console.log(actualUrl);
                                                     dogFriendlyRestaurants[place.name].pic = actualUrl;
                                                 }))
@@ -209,7 +211,7 @@ $(document).ready(()=>{
                                 });
                                 // console.log(dogFriendly)
                                 $starthere.empty();
-                                $starthere.append(renderRestaurants(dogFriendly)); //WHY ISN"T THIS WORKING!!!!
+                                $starthere.append(renderRestaurants(dogFriendly));
                                     
                                 }
 

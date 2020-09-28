@@ -1,6 +1,12 @@
-# **Dine-In Doggos**
+# **Dine-In Doggos** <!-- omit in toc -->
 
 Dine-In Doggos is a website built for dealing with an age-old question: Can we take our best buddy with us when we go out to our favorite restaurants? If you're anything like us, you have often wondered what restaurants in your area allow man's best friend to come with you, and Dine-In Doggos is your site!
+
+- [**General**](#general)
+- [**How it works** and **How to Use**](#how-it-works-and-how-to-use)
+- [**Project Description** and **Requirements**](#project-description-and-requirements)
+- [**What We Learned**](#what-we-learned)
+- [**Credit** and **Licenses**](#credit-and-licenses)
 
 ## **General**
 
@@ -27,7 +33,7 @@ Our team members were: [Dasom Huber](https://github.com/DasomAnH), [Katherine Fr
 
 -Team members worked together to make Dog CEO API return random dog pictures if users submitted unsupported file types to the About Me section
 
-## **How it works** and **How To Use**
+## **How it works** and **How to Use**
 
 Dine-In Doggoes uses Google Maps GeoCode API and Places JavaScript library to find nearby restaurants (once the user enters a city or address) that reviewers have said are dog- or pet-friendly. Each restaurant review returned by the Google Places Library is searched for 'dog', 'animal', or 'pet-friendly' via RegEx, and the positive instances are used to calculate a confidence rating that the restaurant is indeed pet-friendly.
 

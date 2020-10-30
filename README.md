@@ -1,4 +1,4 @@
-# **Dine-In Doggos** <!-- omit in toc -->
+# **[Dine-In Doggos](https://plooney81.github.io/front-end-project/)** <!-- omit in toc -->
 
 Dine-In Doggos is a website built for dealing with an age-old question: Can we take our best buddy with us when we go out to our favorite restaurants? If you're anything like us, you have often wondered what restaurants in your area allow man's best friend to come with you, and Dine-In Doggos is your site!
 

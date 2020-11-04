@@ -11,7 +11,7 @@ Dine-In Doggos is a website built for dealing with an age-old question: Can we t
 ## **General**
 
 Dine-In Doggos was built using the following technologies and libraries:
-* Jquery
+* jQuery
 * Boostrap
 * Ajax
 * JSON
